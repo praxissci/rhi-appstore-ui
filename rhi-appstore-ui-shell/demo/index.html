@@ -1,0 +1,52 @@
+<!--
+@license
+Copyright (c) 2017 Rick Hansen Institute. All rights reserved.
+This code may only be used under the modified Apache license found at https://raw.githubusercontent.com/rick-hansen-institute/rhi-appstore-ui/LICENSE
+Author: RHI Tech <tech@rickhanseninstitute.org>
+-->
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Demo :: rhi-appstore-ui-shell :: Rick Hansen Institute</title>
+    <link rel="import" href="../../../../bower_components/iron-demo-helpers/demo-snippet.html" />
+    <link rel="import" href="../../../../bower_components/marked-element/marked-element.html" />
+    <link rel="import" href="../rhi-appstore-ui-shell.html" />
+    <style>
+        body {
+            font-family: 'Roboto', 'Noto', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            margin: 0;
+            padding: 16px;
+        }
+
+        rhi-appstore-ui-shell {
+            --rhi-appstore-ui-shell-branding: url('resources/branding.png');
+            --rhi-appstore-ui-shell-primary: #CC3333;
+        }
+    </style>
+</head>
+<body onload="_bodyOnLoad()">
+    <div class="main-content">
+        <h3>&lt;rhi-appstore-ui-shell&gt;</h3>
+        <demo-snippet>
+            <template>
+                <rhi-appstore-ui-shell id="appstore"
+                                       latest-action="http://www.google.com/"
+                                       latest-label="Tap Here to Install the lates alpha release of ABC of Autonomic Dysreflexia"></rhi-appstore-ui-shell>
+            </template>
+        </demo-snippet>
+    </div>
+    <script>
+        /* global RhiAppstoreUiShell */
+        'use strict';
+
+        function _bodyOnLoad(e) {
+            document.getElementById('appstore').setReleases([
+                    {action:'http://www.google.ca/', label: 'Alpha 0.0.2', releaseDate: '2017-09-10'},
+                    {action:'http://www.google.ca/', label: 'Alpha 0.0.1', releaseDate: '2017-09-03'}
+                ]);
+        }
+    </script>
+</body>
+</html>

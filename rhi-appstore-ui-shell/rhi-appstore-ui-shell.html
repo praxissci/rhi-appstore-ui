@@ -1,0 +1,175 @@
+<!--
+@license
+Copyright (c) 2017 Rick Hansen Institute. All rights reserved.
+This code may only be used under the modified Apache license found at https://raw.githubusercontent.com/rick-hansen-institute/rhi-appstore-ui/LICENSE
+Author: RHI Tech <tech@rickhanseninstitute.org>
+-->
+<link rel="import" href="../../../bower_components/app-localize-behavior/app-localize-behavior.html" />
+<link rel="import" href="../../../bower_components/polymer/polymer-element.html" />
+<link rel="import" href="../../../bower_components/iron-icon/iron-icon.html" />
+<link rel="import" href="../../../bower_components/iron-icons/iron-icons.html" />
+<link rel="import" href="../../../bower_components/paper-button/paper-button.html" />
+<link rel="import" href="../../../bower_components/paper-styles/color.html" />
+<link rel="import" href="../../../bower_components/paper-styles/typography.html" />
+<dom-module id="rhi-appstore-ui-shell">
+    <!-- Optional shadow DOM template -->
+    <template>
+        <style>
+             :host {
+                display: block;
+
+                --rhi-appstore-ui-shell-primary: var(--paper-indigo-500);
+                --rhi-appstore-ui-shell-primary-complementary: #FFF;
+                --rhi-appstore-ui-shell-branding: url('http://www.rickhanseninstitute.org/images/rhi/new-logo-40percent.png');
+            }
+
+            paper-button.latest-version-download {
+                background-color: var(--rhi-appstore-ui-shell-primary);
+                color: var(--rhi-appstore-ui-shell-primary-complementary);
+            }
+
+            /* ---------- ATOMIC ---------- */
+            .display-flex {
+                display: flex;
+            }
+
+            .text-align-center {
+                text-align: center;
+            }
+            
+            /* ---------- DATA TABLE ---------- */
+            .data-table .data-row {
+                align-items: center;
+                border-bottom: solid 1px rgba(0, 0, 0, .12);
+                font-size: 14px;
+                font-weight: 400;
+                height: 56px;
+                line-height: 20px;
+            }
+
+            .data-table .data-row.header {
+                color: rgba(0, 0, 0, .54);
+                font-size: 13px;
+            }
+
+            .data-table a {
+                color: #000;
+                text-decoration: none;
+            }
+
+            .data-table .data-row .data-cell {
+                flex-basis: 0;
+                flex-grow: 1;
+                margin-right: 24px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .data-table .data-row .data-cell.first {
+                margin-left: 24px;
+            }
+            
+
+            .data-table .data-row .data-cell.icon {
+                flex-basis: 24px;
+                flex-grow: 0;
+            }
+            /* ---------- END OF ATOMIC ---------- */
+
+            .branding {
+                background-image: var(--rhi-appstore-ui-shell-branding);
+                background-position: center;
+                background-repeat: no-repeat;
+                background-size: contain;
+                height: 192px;
+                margin: 0 auto 48px auto;
+                max-width: 480px;
+            }
+
+            .releases {
+                margin: 48px 0;
+            }
+
+            .releases .icon { 
+                color: #666;
+            }
+        </style>
+        <!-- shadow DOM for your element -->
+        <div class="branding"></div>
+        <div class="text-align-center">
+            <paper-button raised
+                        class="latest-version-download"
+                        on-click="latestVersionDownloadTapped">
+                [[latestLabel]]
+            </paper-button>
+        </div>
+        <div class="releases data-table">
+            <div class="header data-row display-flex">
+                <div class="data-cell first">Previous versions</div>
+                <div class="data-cell">Date of publication</div>
+                <div class="data-cell icon">&nbsp;</div>
+            </div>
+            <template is="dom-repeat" items="[[releases]]">
+                <a href="[[item.action]]">
+                    <div class="data-row display-flex">
+                        <div class="data-cell first text-transform-uppercase">[[item.label]]</div>
+                        <div class="data-cell">[[item.releaseDate]]</div>
+                        <div class="data-cell icon">
+                            <iron-icon icon="file-download"></iron-icon>
+                        </div>
+                    </div>
+                </a>
+            </template>
+        </div>
+    </template>
+    <script>
+        /* global Polymer customElements */
+        'use strict';
+
+        class RhiAppstoreUiShell extends Polymer.Element {
+            static get is() { return 'rhi-appstore-ui-shell'; }
+
+            // Declare properties for the element's public API
+            static get properties() {
+                return {
+                    latestLabel: {
+                        type: String,
+                        notify: false,
+                        value: 'Download the latest version'
+                    },
+                    latestAction: {
+                        type: String,
+                        notify: false
+                    },
+                    releases: {
+                        type: Array,
+                        value: function() { return []; }
+                    }
+                };
+            }
+
+            constructor() {
+                super();
+            }
+
+            ready() {
+                super.ready();
+            }
+
+            setReleases(releases) {
+                //this.releases.splice(0, this.releases.length, releases);
+                this.releases = releases;
+                //this.notifyPath('releases');
+            }
+
+            latestVersionDownloadTapped(e) {
+                console.log(this.latestAction);
+                window.open(this.latestAction);
+            }
+        }
+
+        // Register the rhi-appstore-ui-shell element with the browser
+        customElements.define(RhiAppstoreUiShell.is, RhiAppstoreUiShell);
+    </script>
+</dom-module>
