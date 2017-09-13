@@ -38,14 +38,29 @@ Author: RHI Tech <tech@rickhanseninstitute.org>
         </demo-snippet>
     </div>
     <script>
-        /* global RhiAppstoreUiShell */
         'use strict';
-
+        
         function _bodyOnLoad(e) {
-            document.getElementById('appstore').setReleases([
-                    {action:'http://www.google.ca/', label: 'Alpha 0.0.2', releaseDate: '2017-09-10'},
-                    {action:'http://www.google.ca/', label: 'Alpha 0.0.1', releaseDate: '2017-09-03'}
-                ]);
+            var appstore = document.getElementById('appstore');
+            
+            // Safari needs a polyfil to use web components and requires listening to WebComponentsReady
+            if (appstore.setReleases) {
+                initialize(appstore);
+            } else {
+                window.addEventListener('WebComponentsReady', function() {
+                    initialize(appstore);
+                });
+            }
+        }
+
+        function initialize(appstore) {
+            appstore.setReleases([
+                {
+                    action:'itms-services://?action=download-manifest&url=https://cliniquick.azurewebsites.net/dist-rhi-ad/v0.0.2/manifest.plist',
+                    label: 'Alpha v0.0.2 (Latest)',
+                    releaseDate: '2017-09-08'
+                }
+            ]);
         }
     </script>
 </body>
